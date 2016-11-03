@@ -142,7 +142,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_toRightOf="@+id/ts"
-                android:layout_toEndOf="@+id/ts">
+                android:layout_toEndOf="@+id/ts"
+                android:id="@+id/otradiogp">
                 <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
