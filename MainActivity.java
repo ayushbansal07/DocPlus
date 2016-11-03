@@ -1,40 +1,96 @@
-package com.example.android.docplusplus;
+package com.example.abans_000.docplus;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
+import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
+import com.microsoft.windowsazure.mobileservices.table.TableOperationCallback;
 
+
+public class MainActivity extends ActionBarActivity {
+    DBHandleDr dbHandleDr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
-        EditText hospid = (EditText) findViewById(R.id.hospid);
-        EditText reg1 = (EditText) findViewById(R.id.reg1);
-        EditText otname =(EditText) findViewById(R.id.otname);
-        EditText otemail = (EditText) findViewById(R.id.otemail);
-        EditText otpassword = (EditText) findViewById(R.id.otpassword);
-        EditText otcnfpassword = (EditText) findViewById(R.id.otcnfpassword);
-        EditText otage = (EditText) findViewById(R.id.otage);
-        EditText otdate = (EditText) findViewById(R.id.otdate);
-        EditText otaddress = (EditText) findViewById(R.id.otaddress);
-        EditText mob1 = (EditText) findViewById(R.id.mob1);
-        EditText otmobile = (EditText) findViewById(R.id.otmobile);
-        EditText deg1 = (EditText) findViewById(R.id.deg1);
-        Button sign = (Button) findViewById(R.id.sign);
-        RadioGroup rg = (RadioGroup) findViewById(R.id.rg);
-        int checked = rg.getCheckedRadioButtonId();
-
-        sign.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_main);
+        dbHandleDr = new DBHandleDr(this,null,null,1);
+        Button b = (Button) findViewById(R.id.button4);
+        b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,Main3Activity.class));
+                Intent SignOther = new Intent(MainActivity.this, SignOthers.class);
+                startActivity(SignOther);
             }
         });
+
+        Button b2 = (Button) findViewById(R.id.button2);
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent DrSignUp = new Intent(MainActivity.this,DrSignUp.class);
+                startActivity(DrSignUp);
+            }
+        });
+
+        Button b3 = (Button) findViewById(R.id.button3);
+        b3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Emergency1 = new Intent(MainActivity.this,Emergency1.class);
+                startActivity(Emergency1);
+            }
+        });
+
+        Button login = (Button) findViewById(R.id.button);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText musername = (EditText) findViewById(R.id.editText);
+                EditText mpassword = (EditText) findViewById(R.id.editText2);
+                String username = musername.getText().toString();
+                String password = mpassword.getText().toString();
+                if(!username.equals(""))
+                {
+                    //ReturnDr retval;
+                    String dbString;
+                    dbString = dbHandleDr.validLogin(username,password);
+                    if(dbString.equals(""))
+                    {
+                        Toast.makeText(MainActivity.this, "Username and Password DO NOT match", Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        Intent i = new Intent(MainActivity.this,ProfileDr.class);
+                        i.putExtra("dbString",dbString);
+                        startActivity(i);
+                    }
+                    /*if(retval.is_stat())
+                    {
+                        Intent i = new Intent(MainActivity.this,ProfileDr.class);
+                        i.putExtra("name",retval.get_name());
+                        i.putExtra("age",retval.get_age());
+                        i.putExtra("mobile",retval.get_mobile());
+                        i.putExtra("sex",retval.get_sex());
+                        startActivity(i);
+                    }
+                    else
+                    {
+                        Toast.makeText(MainActivity.this, "Username and Password DO NOT match", Toast.LENGTH_LONG).show();
+                    }*/
+                }
+                else
+                {
+                    Toast.makeText(MainActivity.this, "Username can't be empty", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+
     }
 }
